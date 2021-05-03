@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   <style>
+      text{
+        font-family:Helvetica, Arial, sans-serif;
+        font-size:11px;
+        pointer-events:none;
+    }
+    #chart{
+        position:absolute;
+        width:600px;
+        height:600px;
+        top:0;
+        left:0;
+    }
+
+
+.slice:nth-child(2n) path{
+  fill:#E9E4D6
+}
+
+.spin_button{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #503223;
+    color: #fff;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    text-align: center;
+  cursor: pointer;
+}
+.spin_button:before{
+    content: "";
+    border: solid #503223;
+    background: #503223;
+    border-width: 0 6px 6px 0;
+    display: inline-block;
+    padding: 8px;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    position: absolute;
+    bottom: -8px;
+}
+.spin_button .main_text{
+    display: block;
+    font-size: 2rem;
+}
+
+.spin_button .tagline{
+    font-size: 0.75rem;
+}
+
+.inner_circle{
+  filter: drop-shadow( 0px 0px 5px rgba(0, 0, 0, .4));
+}
+
+.outer_text{
+  transform: rotate(270deg) translate(5%, 0%);
+}
+
+.outer_circle_img{
+   transform: rotate(-90deg) translate(-30px, -65px);
+}
+
+   </style>
+</head>
+<body>
+   
+
+
+   <div id="chart">
+      <div class="spin_button" onclick="spin()">
+        <div>
+          <span class="main_text">SPIN</span>
+        <span class="tagline">TO CREATE YOUR OWN PRALINE</span>
+        </div>
+      </div>
+    </div>
+    
+    <!--     <div id="question"><h1></h1></div> -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
+        
+        <script src="d3.v3.min.js" charset="utf-8"></script>
+    
+
+
+
+
+
+   <script>
+      var padding = {top:0, right:0, bottom:0, left:0},
+            w = 600 - padding.left - padding.right,
+            h = 600 - padding.top  - padding.bottom,
+            r = Math.min(w, h)/2,
+            rotation = 30,
+            oldrotation = 30,
+            rotation2 = 30,
+            oldrotation2 = 30,
+            picked = 100000,
+            picked2 = 100000,
+            color = d3.scale.category20();//category20c()
+            
+
+        var data = [
+                    {"label":"VANILLA",  "value":1,  "image":"vanilla.png"}, // padding
+                    {"label":"IMAC PRO",  "value":2,  "image":"coffee.png"}, //font-family
+                    {"label":"SUZUKI",  "value":3,  "question":"What CSS property is used for changing the color of text?"}, //color
+                    {"label":"HONDA",  "value":4,  "question":"What CSS property is used for changing the boldness of text?"}, //font-weight
+                    {"label":"FERRARI",  "value":5,  "question":"What CSS property is used for changing the size of text?"}, //font-size
+                    {"label":"APARTMENT",  "value":6,  "question":"What CSS property is used for changing the background color of a box?"}
+        ];
+
+
+var data_inner = [
+                    {"label":"Inner 1",  "value":1,  "question":"What CSS property is used for specifying the area between the content and its border?"}, // padding
+                    {"label":"IMAC 2",  "value":2,  "question":"What CSS property is used for changing the font?"}, //font-family
+                    {"label":"SUZUKI 3",  "value":3,  "question":"What CSS property is used for changing the color of text?"}, //color
+                    {"label":"HONDA 4",  "value":4,  "question":"What CSS property is used for changing the boldness of text?"}, //font-weight
+                    {"label":"FERRARI 5",  "value":5,  "question":"What CSS property is used for changing the size of text?"}, //font-size
+                    {"label":"APARTMENT 6",  "value":6,  "question":"What CSS property is used for changing the background color of a box?"}
+        ];
+        var svg = d3.select('#chart')
+            .append("svg")
+            .data([data])
+            .attr("width",  w + padding.left + padding.right)
+            .attr("height", h + padding.top + padding.bottom);
+        var container = svg.append("g")
+            .attr("class", "chartholder")
+            .attr("transform", "translate(" + (w/2 + padding.left) + "," + (h/2 + padding.top) + ")");
+        var vis = container
+            .append("g").attr("class", "main_circle")
+
+        var vis_inner = container
+            .append("g").attr("class", "inner_circle")
+
+        vis.transition()
+          .duration(0)
+          .attrTween("transform", rotTween);
+
+        vis_inner.transition()
+          .duration(0)
+          .attrTween("transform", rotTween_inner);
+            
+        var pie = d3.layout.pie().sort(null).value(function(d){return 1;});
+        // declare an arc generator function
+        var arc = d3.svg.arc().outerRadius(r);
+        // select paths, use arc generator to draw
+        var arcs = vis.selectAll("g.slice")
+            .data(pie)
+            .enter()
+            .append("g")
+            .attr("class", "slice");
+            
+        arcs.append("path")
+            .attr("fill", "#FFFAEF")
+            .attr("d", function (d) { return arc(d); });
+        // add the text and image to outer circle
+      //   var txtt = $("text");
+
+      //   arcs.append("g").attr("transform", function(d){
+      //         d.innerRadius = 0;
+      //         d.outerRadius = r;
+      //         d.angle = (d.startAngle + d.endAngle)/2;
+      //         return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius -10) +")";
+      //       }).append("text")
+      //       .attr("text-anchor", "end")
+      //       .attr("class", "outer_text")
+      //       .text( function(d, i) {
+      //           return data[i].label;
+      //       })
+
+
+            arcs.append("g").attr("transform", function(d){
+              d.innerRadius = 0;
+              d.outerRadius = r;
+              d.angle = (d.startAngle + d.endAngle)/2;
+              return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius -10) +")";
+            }).append("image")
+            .attr({
+               class: "outer_circle_img",
+               'xlink:href': function(d, i) {
+                return "images/c1/" + data[i].image;
+            }
+            })
+
+
+            // arcs.append("g").attr("transform", function(d){
+            //   d.innerRadius = 0;
+            //   d.outerRadius = r;
+            //   d.angle = (d.startAngle + d.endAngle)/2;
+            //   return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius -10) +")";
+            // }).append("text")
+            // .attr("text-anchor", "end")
+            // .attr("class", "outer_text")
+            // .text( function(d, i) {
+            //     return data[i].label;
+            // })
+
+            
+            // .append("image")
+            // .attr({
+            //    width: 20,
+            //    height: 20,
+            //    'xlink:href': 'https://www.amrita.edu/sites/default/files/news-images/new/news-events/images/l-nov/grass.jpg'
+            // })
+
+
+
+        var pie = d3.layout.pie().sort(null).value(function(d){return 1;});
+        // declare an arc generator function
+        var arc = d3.svg.arc().outerRadius(r/1.35);
+
+        var arcs_inner = vis_inner.selectAll("g.slice")
+            .data(pie)
+            .enter()
+            .append("g")
+            .attr("class", "slice");
+            
+        arcs_inner.append("path")
+            .attr("fill", "#FFFAEF")
+            .attr("d", function (d) { return arc(d); });
+        // add the text
+        arcs_inner.append("text").attr("transform", function(d){
+              d.innerRadius = 0;
+              d.outerRadius = r/1.35;
+              d.angle = (d.startAngle + d.endAngle)/2;
+              return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius -10) +")";
+            })
+            .attr("text-anchor", "end")
+            .text( function(d, i) {
+                return data_inner[i].label;
+            });
+
+
+
+
+        function spin(d){
+            
+            var  ps       = 360/6,
+                 rng      = Math.floor((Math.random() * 1440) + 360);
+                
+            rotation = (Math.round(rng / ps) * ps);
+            
+            picked = Math.round(6 - (rotation % 360)/ps) + 2;
+            picked = picked >= 6 ? (picked % 6) : picked;
+
+            rotation += 0+ Math.round(ps/2);
+            vis.transition()
+                .duration(3000)
+                .attrTween("transform", rotTween)
+                .each("end", function(){
+                    // console.log(data[picked].value)
+                    oldrotation = rotation;
+                }); 
+          
+          
+          var  ps2       = 360/6,
+              rng2      = Math.floor((Math.random() * 1440) + 360);
+                
+            rotation2 = (Math.round(rng2 / ps2) * ps2 );
+           
+            picked2 = Math.round( (rotation2 % 360)/ps2);
+            picked2 = picked2 >= 6 ? (picked2 % 6) : picked2;
+          
+
+            rotation2 -= 150;
+            vis_inner.transition()
+                .duration(3000)
+                .attrTween("transform", rotTween_inner)
+                .each("end", function(){
+                    // console.log(data_inner[picked2].value)
+                    oldrotation2 = rotation2;
+                }); 
+          console.log( "picked: "+picked , picked2)
+          console.log(results["1_2"]["name"])
+          
+          
+        }
+        
+        
+        
+        function rotTween(to) {
+          var i = d3.interpolate(oldrotation % 360, rotation);
+          return function(t) {
+            return "rotate(" + i(t) + ")";
+          };
+        }
+
+        function rotTween_inner(to) { 
+          var i = d3.interpolate(oldrotation2 % 360, rotation2);
+          return function(t) {
+            return "rotate(-" + i(t) + ")";
+          };
+        }
+
+        
+        
+        function getRandomNumbers(){
+            var array = new Uint16Array(1000);
+            var scale = d3.scale.linear().range([360, 1440]).domain([0, 100000]);
+            if(window.hasOwnProperty("crypto") && typeof window.crypto.getRandomValues === "function"){
+                window.crypto.getRandomValues(array);
+                console.log("works");
+            } else {
+                //no support for crypto, get crappy random numbers
+                for(var i=0; i < 1000; i++){
+                    array[i] = Math.floor(Math.random() * 100000) + 1;
+                }
+            }
+            return array;
+        }
+
+
+var results = {
+  "1_2":{"name":"abc", "id": "fff"}
+}
+
+   </script>
+</body>
+</html>
