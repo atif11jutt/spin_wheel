@@ -43,6 +43,10 @@
          cursor: pointer;
       }
 
+      .disabled{
+         pointer-events: none;
+      }
+
       .spin_button:before {
          content: "";
          border: solid #503223;
@@ -66,21 +70,14 @@
       }
 
       .inner_circle {
-         filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, .4));
-      }
-
-      .outer_text {
-         transform: rotate(270deg);
-         text-anchor: middle;
-         font-size: 15px;
-         text-transform: uppercase;
-         fill: #503223;
+         /* filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.4)); */
+         filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.3));
       }
 
       .inner_text {
          transform: rotate(270deg);
          text-anchor: middle;
-         font-size: 15px;
+         font-size: 14px;
          text-transform: uppercase;
          fill: #503223;
       }
@@ -92,6 +89,10 @@
       .outer_circle_img {
          transform: rotate(-90deg) translate(-30px, -65px);
          width: 55px;
+      }
+
+      svg, .spin_button{
+         user-select: none;
       }
    </style>
 </head>
@@ -146,7 +147,7 @@
 
       var data_inner = [
       { "title": "ganache", "title_bold": "costa rica", "value": 1, "image": "costaricadark.png" },
-      { "title": "ganache", "title_bold": "venezuela", "value": 1, "image": "venezuelamilk.png" },
+      { "title": "ganache", "title_bold": "venezuela", "value": 1, "image": "venezuela.png" },
       { "title": "praline", "title_bold": "almond", "value": 1, "image": "almond.png" },
       { "title": "praline", "title_bold": "pecan", "value": 1, "image": "pecan.png" },
       { "title": "praline", "title_bold": "hazelnut", "value": 1, "image": "hazelnut.png" },
@@ -197,7 +198,7 @@
          return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius - 15) + ")";
       }).append("text")
          .attr("text-anchor", "end")
-         .attr("class", "outer_text")
+         .attr("class", "inner_text outer")
          .text(function (d, i) {
             return data[i].label;
          })
@@ -254,7 +255,7 @@
          d.innerRadius = 0;
          d.outerRadius = r / 1.45;
          d.angle = (d.startAngle + d.endAngle) / 2;
-         return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius - 15) + ")";
+         return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius - 20) + ")";
       }).append("text")
          .attr("text-anchor", "end")
          .attr("class", "inner_text bold")
@@ -281,6 +282,8 @@
 
 
       function spin(d) {
+
+         $(".spin_button").addClass("disabled")
 
          var ps = 360 / 6,
             rng = Math.floor((Math.random() * 1440) + 360);
@@ -319,6 +322,10 @@
             });
          console.log("picked: " + picked, picked2)
          console.log(results["1_2"]["name"])
+
+         setTimeout(function(){
+            $(".spin_button").removeClass("disabled")
+         },3000)
 
 
       }
