@@ -21,7 +21,6 @@
          left: 0;
       }
 
-
       .slice:nth-child(2n) path {
          fill: #E9E4D6
       }
@@ -94,6 +93,83 @@
       svg, .spin_button{
          user-select: none;
       }
+
+      #result{
+         background: #503223;
+         position: absolute;
+         width: 70%;
+         height: 70%;
+         border-radius: 50%;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%) scale(0.6);
+         box-shadow: 0 0 20px 0px #00000078;
+         color: #E8E0D1;
+         text-align: center;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+         /* display: none; */
+         visibility: hidden;
+         opacity: 0;
+         transition: 0.5s;
+      }
+
+      #result.show{
+         opacity: 1;
+         visibility: visible;
+         transform: translate(-50%, -50%) scale(1);
+      }
+
+      .result_cont{
+         width: 70%;
+         margin: auto;
+      }
+
+      .result_badge{
+         width: 50px;
+         margin-top: 30px;
+      }
+
+      .result_title{
+         margin: 0.5rem 0;
+      }
+      .result_dec {
+         font-size: 0.75rem;
+         margin: 0;
+      }
+      .result_stats{
+         border-radius: 40%;
+         width: 80%;
+         max-width: 210px;
+      }
+
+      .result_spin{
+         position: absolute;
+         bottom: 25px;
+         right: 25px;
+         background: #E8E0D1;
+         color: #503223;
+         width: 53px;
+         height: 53px;
+         text-align: center;
+         border-radius: 50%;
+         padding: 15px;
+         font-size: 16px;
+         font-weight: 600;
+         box-shadow: 0 0 15px #0000006b;
+         cursor: pointer;
+         opacity: 0;
+         transition: 0.3s;
+         transition-delay: 1s;
+      }
+
+      #result.show .result_spin{
+         opacity: 1;
+      }
+      .result_spin img{
+         width: 16px;
+      }
    </style>
 </head>
 
@@ -106,6 +182,18 @@
          <div>
             <span class="main_text">SPIN</span>
             <span class="tagline">TO CREATE YOUR OWN PRALINE</span>
+         </div>
+      </div>
+      <div id="result">
+         <div class="result_cont">
+            <img src="images/almond.png" alt="" class="result_badge">
+            <h4 class="result_title">VANILLA SALTED + CARAMEL</h4>
+            <h6 class="result_dec">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore vero molestias nemo veritatis nulla sed eaque similique fugit</h6>
+            <img src="images/results/LIME+PECAN.png" alt="" class="result_stats">
+         </div>
+         <div class="result_spin">
+            SPIN AGAIN
+            <img src="images/arrow.png" alt="">
          </div>
       </div>
    </div>
@@ -146,12 +234,12 @@
 
 
       var data_inner = [
-      { "title": "ganache", "title_bold": "costa rica", "value": 1, "image": "costaricadark.png" },
-      { "title": "ganache", "title_bold": "venezuela", "value": 1, "image": "venezuela.png" },
-      { "title": "praline", "title_bold": "almond", "value": 1, "image": "almond.png" },
-      { "title": "praline", "title_bold": "pecan", "value": 1, "image": "pecan.png" },
-      { "title": "praline", "title_bold": "hazelnut", "value": 1, "image": "hazelnut.png" },
-      { "title": "ganache", "title_bold": "salted caramel", "value": 1, "image": "saltedcaramel.png" }
+      { "title": "ganache", "title_bold": "costa rica", "value": 1, "image": "costaricadark.png", "label": "costarica"},
+      { "title": "ganache", "title_bold": "venezuela", "value": 2, "image": "venezuela.png"  , "label": "venezuela"},
+      { "title": "praline", "title_bold": "almond", "value": 3, "image": "almond.png"  , "label": "almond"},
+      { "title": "praline", "title_bold": "pecan", "value": 4, "image": "pecan.png"  , "label": "pecan"},
+      { "title": "praline", "title_bold": "hazelnut", "value": 5, "image": "hazelnut.png"  , "label": "hazelnut"},
+      { "title": "ganache", "title_bold": "salted caramel", "value": 6, "image": "saltedcaramel.png" , "label": "saltedcaramel" }
       ];
       var svg = d3.select('#chart')
          .append("svg")
@@ -320,8 +408,11 @@
                // console.log(data_inner[picked2].value)
                oldrotation2 = rotation2;
             });
-         console.log("picked: " + picked, picked2)
-         console.log(results["1_2"]["name"])
+         // console.log("picked: " + picked, picked2)
+         // console.log(results["1_2"]["name"])
+         show_result(data[picked].label.toLocaleUpperCase()+"+"+data_inner[picked2].label.toLocaleUpperCase())
+         // show_result("VANILLA"+"+"+data_inner[picked2].label.toLocaleUpperCase())
+         
 
          setTimeout(function(){
             $(".spin_button").removeClass("disabled")
@@ -363,10 +454,87 @@
          return array;
       }
 
+      function show_result(id){
+         console.log(id)
+         // id = "VANILLA+PECAN";
+         console.log(results[id])
+         // badge
+         // $(".result_badge").attr("src", "images/results_badge/"+results[id].image)
+         $(".result_stats").attr("src", "images/results/"+results[id].image)
+         $(".result_title").text(results[id].title)
+         $(".result_dec").text(results[id].description)
+         // dummy text
+         $(".result_dec").text("Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore vero molestias nemo veritatis nulla sed eaque similique fugit")
+         setTimeout(function(){
+            $("#result").addClass("show");
+         },3200)
+      }
+
+      $(".result_spin").click(function(){
+         $("#result").removeClass("show");
+         setTimeout(function(){
+            spin();
+         },200)
+      })
 
       var results = {
-         "1_2": { "name": "abc", "id": "fff" }
+
+         // VANILLA
+
+         "VANILLA+PECAN": { "image": "VANILLA+PECAN.png", "title": "VANILLA + PECAN", "description": "A praliné of pecan nuts covered with white chocolate atop a base of white chocolate with vanilla from Madagascar." },
+         "VANILLA+ALMOND": { "image": "VANILLA+ALMOND.png", "title": "VANILLA + ALMOND", "description": "An almond praliné with pieces of Montélimar (France) nougat covered with milk chocolate atop a base of white chocolate with vanilla from Madagascar." },
+         "VANILLA+HAZELNUT": { "image": "VANILLA+HAZELNUT.png", "title": "VANILLA + HAZELNUT", "description": "A crunchy hazelnut praliné covered with dark chocolate atop a base of white chocolate with vanilla from Madagascar." },
+         "VANILLA+SALTEDCARAMEL": { "image": "VANILLA+SALTEDCARAMEL.png", "title": "VANILLA + SALTED CARAMEL", "description": "A caramel ganache covered with dark chocolate atop a base of white chocolate with vanilla from Madagascar." },
+         "VANILLA+VENEZUELA": { "image": "VANILLA+VENEZUELA.png", "title": "VANILLA + VENEZUELA", "description": "A ganache of milk chocolate from Venezuela (45% cocoa) covered with milk chocolate atop a base of white chocolate with vanilla from Madagascar." },
+         "VANILLA+COSTARICA": { "image": "VANILLA+COSTARICA.png", "title": "VANILLA + COSTA RICA", "description": "A ganache of dark chocolate from Costa Rica (64% cocoa) covered with dark chocolate atop a base of white chocolate with vanilla from Madagascar." },
+
+         // GINGER
+
+         "GINGER+PECAN": { "image": "GINGER+PECAN.png", "title": "GINGER + PECAN", "description": "A praliné of pecan nuts covered with white chocolate atop a base of milk chocolate with ginger." },
+         "GINGER+ALMOND": { "image": "GINGER+ALMOND.png", "title": "GINGER + ALMOND", "description": "An almond praliné with pieces of Montélimar (France) nougat covered with milk chocolate atop a base of milk chocolate with ginger." },
+         "GINGER+HAZELNUT": { "image": "GINGER+HAZELNUT.png", "title": "GINGER + HAZELNUT", "description": "A crunchy hazelnut praliné covered with dark chocolate atop a base of milk chocolate with ginger." },
+         "GINGER+SALTEDCARAMEL": { "image": "GINGER+SALTEDCARAMEL.png", "title": "GINGER + SALTED CARAMEL", "description": "A caramel ganache covered with dark chocolate atop a base of milk chocolate with ginger." },
+         "GINGER+VENEZUELA": { "image": "GINGER+VENEZUELA.png", "title": "GINGER + VENEZUELA", "description": "A ganache of milk chocolate from Venezuela (45% cocoa) covered with milk chocolate atop a base of milk chocolate with ginger." },
+         "GINGER+COSTARICA": { "image": "GINGER+COSTARICA.png", "title": "GINGER + COSTA RICA", "description": "A ganache of dark chocolate from Costa Rica (64% cocoa) covered with dark chocolate atop a base of milk chocolate with ginger." },
+
+         // RASPBERRY
+
+         "RASPBERRY+PECAN": { "image": "RASPBERRY+PECAN.png", "title": "RASPBERRY + PECAN", "description": "A praliné of pecan nuts covered with white chocolate atop a base of white chocolate with raspberry." },
+         "RASPBERRY+ALMOND": { "image": "RASPBERRY+ALMOND.png", "title": "RASPBERRY + ALMOND", "description": "An almond praliné with pieces of Montélimar (France) nougat covered with milk chocolate atop a base of white chocolate with raspberry." },
+         "RASPBERRY+HAZELNUT": { "image": "RASPBERRY+HAZELNUT.png", "title": "RASPBERRY + HAZELNUT", "description": "A crunchy hazelnut praliné covered with dark chocolate atop a base of white chocolate with raspberry." },
+         "RASPBERRY+SALTEDCARAMEL": { "image": "RASPBERRY+SALTEDCARAMEL.png", "title": "RASPBERRY + SALTED CARAMEL", "description": "A caramel ganache covered with dark chocolate atop a base of white chocolate with raspberry." },
+         "RASPBERRY+VENEZUELA": { "image": "RASPBERRY+VENEZUELA.png", "title": "RASPBERRY + VENEZUELA", "description": "A ganache of milk chocolate from Venezuela (45% cocoa) covered with milk chocolate atop a base of white chocolate with raspberry." },
+         "RASPBERRY+COSTARICA": { "image": "RASPBERRY+COSTARICA.png", "title": "RASPBERRY + COSTA RICA", "description": "A ganache of dark chocolate from Costa Rica (64% cocoa) covered with dark chocolate atop a base of white chocolate with raspberry" },
+
+         // COFFEE
+
+         "COFFEE+PECAN": { "image": "COFFEE+PECAN.png", "title": "COFFEE + PECAN", "description": "A praliné of pecan nuts covered with white chocolate atop a base of dark chocolate with coffee." },
+         "COFFEE+ALMOND": { "image": "COFFEE+ALMOND.png", "title": "COFFEE + ALMOND", "description": "A praliné of pecan nuts covered with white chocolate atop a base of dark chocolate with coffee." },
+         "COFFEE+HAZELNUT": { "image": "COFFEE+HAZELNUT.png", "title": "COFFEE + HAZELNUT", "description": "A crunchy hazelnut praliné covered with dark chocolate atop a base of dark chocolate with coffee." },
+         "COFFEE+SALTEDCARAMEL": { "image": "COFFEE+SALTEDCARAMEL.png", "title": "COFFEE + SALTED CARAMEL", "description": "A caramel ganache covered with dark chocolate atop a base of dark chocolate with coffee." },
+         "COFFEE+VENEZUELA": { "image": "COFFEE+VENEZUELA.png", "title": "COFFEE + VENEZUELA", "description": "A ganache of milk chocolate from Venezuela (45% cocoa) covered with milk chocolate atop a base of dark chocolate with coffee." },
+         "COFFEE+COSTARICA": { "image": "COFFEE+COSTARICA.png", "title": "COFFEE + COSTA RICA", "description": "A ganache of dark chocolate from Costa Rica (64% cocoa) covered with dark chocolate atop a base of dark chocolate with coffee." },
+
+         // LIME
+
+         "LIME+PECAN": { "image": "LIME+PECAN.png", "title": "LIME + PECAN", "description": "A praliné of pecan nuts covered with white chocolate atop a base of white chocolate with lime and lemon." },
+         "LIME+ALMOND": { "image": "LIME+ALMOND.png", "title": "LIME + ALMOND", "description": "An almond praliné with pieces of Montélimar (France) nougat covered with milk chocolate atop a base of white chocolate with lime and lemon." },
+         "LIME+HAZELNUT": { "image": "LIME+HAZELNUT.png", "title": "LIME + HAZELNUT", "description": "A crunchy hazelnut praliné covered with dark chocolate atop a base of white chocolate with lime and lemon." },
+         "LIME+SALTEDCARAMEL": { "image": "LIME+SALTEDCARAMEL.png", "title": "LIME + SALTED CARAMEL", "description": "A caramel ganache covered with dark chocolate atop a base of white chocolate with lime and lemon." },
+         "LIME+VENEZUELA": { "image": "LIME+VENEZUELA.png", "title": "LIME + VENEZUELA", "description": "A ganache of milk chocolate from Venezuela (45% cocoa) covered with milk chocolate atop a base of white chocolate with lime and lemon." },
+         "LIME+COSTARICA": { "image": "LIME+COSTARICA.png", "title": "LIME + COSTA RICA", "description": "A ganache of dark chocolate from Costa Rica (64% cocoa) covered with dark chocolate atop a base of white chocolate with lime and lemon. " },
+
+         // CARAMEL
+
+         "CARAMEL+PECAN": { "image": "CARAMEL+PECAN.png", "title": "CARAMEL + PECAN", "description": "A praliné of pecan nuts covered with white chocolate atop a base of white and milk chocolate with caramel." },
+         "CARAMEL+ALMOND": { "image": "CARAMEL+ALMOND.png", "title": "CARAMEL + ALMOND", "description": "An almond praliné with pieces of Montélimar (France) nougat covered with milk chocolate atop a base of white and milk chocolate with caramel." },
+         "CARAMEL+HAZELNUT": { "image": "CARAMEL+HAZELNUT.png", "title": "CARAMEL + HAZELNUT", "description": "A crunchy hazelnut praliné covered with dark chocolate atop a base of white and milk chocolate with caramel." },
+         "CARAMEL+SALTEDCARAMEL": { "image": "CARAMEL+SALTEDCARAMEL.png", "title": "CARAMEL + SALTED CARAMEL", "description": "A caramel ganache covered with dark chocolate atop a base of white and milk chocolate with caramel." },
+         "CARAMEL+VENEZUELA": { "image": "CARAMEL+VENEZUELA.png", "title": "CARAMEL + VENEZUELA", "description": "A ganache of milk chocolate from Venezuela (45% cocoa) covered with milk chocolate atop a base of white and milk chocolate with caramel." },
+         "CARAMEL+COSTARICA": { "image": "CARAMEL+COSTARICA.png", "title": "CARAMEL + COSTA RICA", "description": "A ganache of dark chocolate from Costa Rica (64% cocoa) covered with dark chocolate atop a base of white and milk chocolate with caramel." },
+
       }
+
 
    </script>
 </body>
