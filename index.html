@@ -7,6 +7,26 @@
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Document</title>
    <style>
+      @font-face {
+         font-family: 'Flama bold';
+         font-style: normal;
+         font-weight: normal;
+         src: local('Flama'), url('css/fonts/FlamaCondensed-Black.woff') format('woff');
+      }
+
+      @font-face {
+         font-family: 'NewsPlantinMTStd';
+         font-style: normal;
+         font-weight: normal;
+         src: local('NewsPlantinMTStd'), url('css/fonts/NewsPlantinMTStd.otf') format('otf');
+      }
+
+      @font-face {
+         font-family: 'Flama';
+         font-style: normal;
+         font-weight: normal;
+         src: local('Flama'), url('css/fonts/FlamaCondensed-Medium.woff') format('woff');
+      }
       text {
          font-family: Helvetica, Arial, sans-serif;
          font-size: 11px;
@@ -14,11 +34,15 @@
       }
 
       #chart {
-         position: absolute;
-         width: 600px;
-         height: 600px;
-         top: 0;
-         left: 0;
+         /* position: absolute; */
+         width: 100%;
+         max-width: 600px;
+         /* height: 600px; */
+         /* top: 0; */
+         /* left: 0; */
+         margin: auto;
+         position: relative;
+         font-family: 'Flama';
       }
 
       .slice:nth-child(2n) path {
@@ -40,6 +64,10 @@
          border-radius: 50%;
          text-align: center;
          cursor: pointer;
+      }
+
+      .spin_button img{
+         width: 25px;
       }
 
       .disabled{
@@ -65,7 +93,7 @@
       }
 
       .spin_button .tagline {
-         font-size: 0.75rem;
+         font-size: 1rem;
       }
 
       .inner_circle {
@@ -76,13 +104,14 @@
       .inner_text {
          transform: rotate(270deg);
          text-anchor: middle;
-         font-size: 14px;
+         font-size: 16px;
          text-transform: uppercase;
          fill: #503223;
+         font-family: 'Flama';
       }
 
       .inner_text.bold {
-         font-weight: 700;
+         font-family: 'Flama bold';
       }
 
       .outer_circle_img {
@@ -135,8 +164,11 @@
          margin: 0.5rem 0;
       }
       .result_dec {
-         font-size: 0.75rem;
+         font-size: 0.95rem;
          margin: 0;
+         font-family: 'NewsPlantinMTStd';
+         font-weight: 300;
+         opacity: 0.5;
       }
       .result_stats{
          border-radius: 40%;
@@ -155,7 +187,7 @@
          text-align: center;
          border-radius: 50%;
          padding: 15px;
-         font-size: 16px;
+         font-size: 17px;
          font-weight: 600;
          box-shadow: 0 0 15px #0000006b;
          cursor: pointer;
@@ -170,6 +202,53 @@
       .result_spin img{
          width: 16px;
       }
+
+
+      @media screen and (max-width: 576px) {
+         #result {
+            width: 100%;
+            height: 100%;
+         }
+         .outer_circle_img {
+            transform: rotate(-90deg) translate(-25px, -40px);
+            width: 45px;
+         }
+
+         .main_circle .outer_circle_img {
+            transform: rotate(-90deg) translate(-25px, -50px);
+         }
+         .inner_text {
+            transform: rotate(270deg) translateY(10px);
+            font-size: 15px;
+         }
+         .main_circle .inner_text {
+            transform: rotate(270deg) translateY(5px);
+         }
+
+         .spin_button {
+            width: 140px;
+            height: 140px;
+         }
+         .spin_button .tagline {
+            font-size: 0.85rem;
+            z-index: 11111;
+            position: sticky;
+         }
+      }
+
+      @media screen and (max-width: 480px){
+         .spin_button {
+            width: 140px;
+            height: 140px;
+            transform: translate(-50%, -50%) scale(0.75);
+         }
+         .result_dec {
+            font-size: 0.85rem;
+         }
+         .result_stats {
+            width: 70%;
+         }
+      }
    </style>
 </head>
 
@@ -180,14 +259,15 @@
    <div id="chart">
       <div class="spin_button" onclick="spin()">
          <div>
-            <span class="main_text">SPIN</span>
+            <img src="images/tap.png" alt="">
+            <span class="main_text">TAP</span>
             <span class="tagline">TO CREATE YOUR OWN PRALINE</span>
          </div>
       </div>
       <div id="result">
          <div class="result_cont">
             <img src="images/almond.png" alt="" class="result_badge">
-            <h4 class="result_title">VANILLA SALTED + CARAMEL</h4>
+            <h3 class="result_title">VANILLA SALTED + CARAMEL</h3>
             <h6 class="result_dec">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore vero molestias nemo veritatis nulla sed eaque similique fugit</h6>
             <img src="images/results/LIME+PECAN.png" alt="" class="result_stats">
          </div>
@@ -210,9 +290,11 @@
 
 
    <script>
+      var chartWidth = $("#chart").width();
+      console.log(chartWidth)
       var padding = { top: 0, right: 0, bottom: 0, left: 0 },
-         w = 600 - padding.left - padding.right,
-         h = 600 - padding.top - padding.bottom,
+         w = chartWidth - padding.left - padding.right,
+         h = chartWidth - padding.top - padding.bottom,
          r = Math.min(w, h) / 2,
          rotation = 30,
          oldrotation = 30,
@@ -464,7 +546,7 @@
          $(".result_title").text(results[id].title)
          $(".result_dec").text(results[id].description)
          // dummy text
-         $(".result_dec").text("Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore vero molestias nemo veritatis nulla sed eaque similique fugit")
+         // $(".result_dec").text("Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore vero molestias nemo veritatis nulla sed eaque similique fugit")
          setTimeout(function(){
             $("#result").addClass("show");
          },3200)
