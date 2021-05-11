@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <link rel="stylesheet" href="css/spin_wheel.css">
+   <title>French</title>
+</head>
+
+<body>
+   <div id="chart">
+      <div class="spin_button" onclick="spin()">
+         <div>
+            <img src="images/tap.png" alt="">
+            <span class="main_text">CLIQUEZ</span>
+            <span class="tagline">Pour créer votre propre praline</span>
+         </div>
+      </div>
+      <div id="result">
+         <div class="result_cont">
+            <div class="result_badge">
+               <img src="images/almond.png" alt="icon" class="top_image_1">
+               <img src="images/almond.png" alt="icon" class="top_image_2">
+            </div>
+            <h3 class="result_title">VANILLA SALTED + CARAMEL</h3>
+            <h6 class="result_dec">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore vero molestias nemo
+               veritatis nulla sed eaque similique fugit</h6>
+            <img src="images/results/LIME+PECAN.png" alt="" class="result_stats">
+         </div>
+         <div class="result_spin">
+            Tourne encore
+            <img src="images/arrow.png" alt="">
+         </div>
+      </div>
+   </div>
+
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+   <script src="d3.v3.min.js" charset="utf-8"></script>
+
+
+   <script>
+      // get the container width set the width and height of the SVG circle
+      var chartWidth = $("#chart").width();
+      // essential veriables
+      var padding = { top: 0, right: 0, bottom: 0, left: 0 },
+         w = chartWidth - padding.left - padding.right,
+         h = chartWidth - padding.top - padding.bottom,
+         r = Math.min(w, h) / 2,
+         rotation = 30,
+         oldrotation = 30,
+         rotation2 = 30,
+         oldrotation2 = 30,
+         picked = 100000,
+         picked2 = 100000,
+         color = d3.scale.category20();//category20c()
+
+      // outer circle data
+      var data = [
+         { "label": "vanilla", "value": 1, "image": "vanilla.png" },
+         { "label": "ginger", "value": 2, "image": "ginger.png" },
+         { "label": "lime", "value": 3, "image": "lime.png" },
+         { "label": "raspberry", "value": 4, "image": "raspberry.png" },
+         { "label": "caramel", "value": 5, "image": "caramel.png" },
+         { "label": "coffee", "value": 6, "image": "coffee.png" }
+      ];
+
+      // inner circle data
+      var data_inner = [
+         { "title": "ganache", "title_bold": "costa rica", "value": 1, "image": "costarica.png", "label": "costarica" },
+         { "title": "ganache", "title_bold": "venezuela", "value": 2, "image": "venezuela.png", "label": "venezuela" },
+         { "title": "praline", "title_bold": "almond", "value": 3, "image": "almond.png", "label": "almond" },
+         { "title": "praline", "title_bold": "pecan", "value": 4, "image": "pecan.png", "label": "pecan" },
+         { "title": "praline", "title_bold": "hazelnut", "value": 5, "image": "hazelnut.png", "label": "hazelnut" },
+         { "title": "ganache", "title_bold": "salted caramel", "value": 6, "image": "saltedcaramel.png", "label": "saltedcaramel" }
+      ];
+      var svg = d3.select('#chart')
+         .append("svg")
+         .data([data])
+         .attr("width", w + padding.left + padding.right)
+         .attr("height", h + padding.top + padding.bottom);
+      var container = svg.append("g")
+         .attr("class", "chartholder")
+         .attr("transform", "translate(" + (w / 2 + padding.left) + "," + (h / 2 + padding.top) + ")");
+      var vis = container
+         .append("g").attr("class", "main_circle")
+
+      var vis_inner = container
+         .append("g").attr("class", "inner_circle")
+
+      // set the initial position
+      vis.transition()
+         .duration(0)
+         .attrTween("transform", rotTween);
+
+      vis_inner.transition()
+         .duration(0)
+         .attrTween("transform", rotTween_inner);
+
+      var pie = d3.layout.pie().sort(null).value(function (d) { return 1; });
+      // declare an arc generator function
+      var arc = d3.svg.arc().outerRadius(r);
+      // select paths, use arc generator to draw
+      var arcs = vis.selectAll("g.slice")
+         .data(pie)
+         .enter()
+         .append("g")
+         .attr("class", "slice");
+
+      // arc item
+      arcs.append("path")
+         .attr("fill", "#FFFAEF")
+         .attr("d", function (d) { return arc(d); });
+
+      // add the text and image to outer circle
+      arcs.append("g").attr("transform", function (d) {
+         d.innerRadius = 0;
+         d.outerRadius = r;
+         d.angle = (d.startAngle + d.endAngle) / 2;
+         return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius - 15) + ")";
+      }).append("text")
+         .attr("text-anchor", "end")
+         .attr("class", "inner_text outer")
+         .text(function (d, i) {
+            return data[i].label;
+         })
+
+
+      // add image
+      arcs.append("g").attr("transform", function (d) {
+         // console.log(d)
+         d.innerRadius = 0;
+         d.outerRadius = r;
+         d.angle = (d.startAngle + d.endAngle) / 2;
+         return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius - 15) + ")";
+      }).append("image")
+         .attr({
+            class: "outer_circle_img",
+            'xlink:href': function (d, i) {
+               return "images/" + data[i].image;
+            }
+         })
+
+
+
+
+
+
+      var pie = d3.layout.pie().sort(null).value(function (d) { return 1; });
+      // declare an arc generator function
+      var arc = d3.svg.arc().outerRadius(r / 1.45);
+
+      var arcs_inner = vis_inner.selectAll("g.slice")
+         .data(pie)
+         .enter()
+         .append("g")
+         .attr("class", "slice");
+
+      // add item to inner cirlce
+      arcs_inner.append("path")
+         .attr("fill", "#FFFAEF")
+         .attr("d", function (d) { return arc(d); });
+
+      // add the text
+      arcs_inner.append("g").attr("transform", function (d) {
+         d.innerRadius = 0;
+         d.outerRadius = r / 1.45;
+         d.angle = (d.startAngle + d.endAngle) / 2;
+         return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius - 40) + ")";
+      }).append("text")
+         .attr("text-anchor", "end")
+         .attr("class", "inner_text")
+         .text(function (d, i) {
+            return data_inner[i].title;
+         })
+
+      // add the bold text
+      arcs_inner.append("g").attr("transform", function (d) {
+         d.innerRadius = 0;
+         d.outerRadius = r / 1.45;
+         d.angle = (d.startAngle + d.endAngle) / 2;
+         return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius - 20) + ")";
+      }).append("text")
+         .attr("text-anchor", "end")
+         .attr("class", "inner_text bold")
+         .text(function (d, i) {
+            return data_inner[i].title_bold;
+         })
+
+      // add image
+      arcs_inner.append("g").attr("transform", function (d) {
+         // console.log(d)
+         d.innerRadius = 0;
+         d.outerRadius = r / 1.45;
+         d.angle = (d.startAngle + d.endAngle) / 2;
+         return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")translate(" + (d.outerRadius - 40) + ")";
+      }).append("image")
+         .attr({
+            class: "outer_circle_img",
+            'xlink:href': function (d, i) {
+               return "images/" + data_inner[i].image;
+            }
+         })
+
+
+
+
+      function spin(d) {
+
+         $(".spin_button").addClass("disabled")
+
+         var ps = 360 / 6,
+            rng = Math.floor((Math.random() * 1440) + 360);
+
+         rotation = (Math.round(rng / ps) * ps);
+
+         picked = Math.round(6 - (rotation % 360) / ps) + 2;
+         picked = picked >= 6 ? (picked % 6) : picked;
+
+         rotation += 0 + Math.round(ps / 2);
+         vis.transition()
+            .duration(3000)
+            .attrTween("transform", rotTween)
+            .each("end", function () {
+               oldrotation = rotation;
+            });
+
+
+         // 6 are the circle items
+         var ps2 = 360 / 6,
+            rng2 = Math.floor((Math.random() * 1440) + 360);
+
+         rotation2 = (Math.round(rng2 / ps2) * ps2);
+
+         picked2 = Math.round((rotation2 % 360) / ps2);
+         picked2 = picked2 >= 6 ? (picked2 % 6) : picked2;
+
+
+         rotation2 -= 150;
+         vis_inner.transition()
+            .duration(3000)
+            .attrTween("transform", rotTween_inner)
+            .each("end", function () {
+               oldrotation2 = rotation2;
+            });
+
+         // run show_result function to create and show the results
+         show_result(data[picked].label.toLocaleUpperCase() + "+" + data_inner[picked2].label.toLocaleUpperCase())
+
+         setTimeout(function () {
+            $(".spin_button").removeClass("disabled")
+         }, 3000)
+      }
+
+
+
+
+      // rotate animation to selected angle
+      function rotTween(to) {
+         var i = d3.interpolate(oldrotation % 360, rotation);
+         return function (t) {
+            return "rotate(" + i(t) + ")";
+         };
+      }
+
+      // rotate animation to selected angle
+      function rotTween_inner(to) {
+         var i = d3.interpolate(oldrotation2 % 360, rotation2);
+         return function (t) {
+            return "rotate(-" + i(t) + ")";
+         };
+      }
+
+
+
+      // get random number
+      function getRandomNumbers() {
+         var array = new Uint16Array(1000);
+         var scale = d3.scale.linear().range([360, 1440]).domain([0, 100000]);
+         if (window.hasOwnProperty("crypto") && typeof window.crypto.getRandomValues === "function") {
+            window.crypto.getRandomValues(array);
+            console.log("works");
+         } else {
+            //no support for crypto, get crappy random numbers
+            for (var i = 0; i < 1000; i++) {
+               array[i] = Math.floor(Math.random() * 100000) + 1;
+            }
+         }
+         return array;
+      }
+
+      function show_result(id) {
+         // fetch top images
+         var topImages = id.toLowerCase().split("+");
+         // top images
+         $(".top_image_1").attr("src", "images/" + topImages[1] + ".png")
+         $(".top_image_2").attr("src", "images/" + topImages[0] + ".png")
+         // main stats image
+         $(".result_stats").attr("src", "images/results_fr/" + results[id].image)
+         // title and text
+         $(".result_title").text(results[id].title)
+         $(".result_dec").text(results[id].description)
+
+         // show result box
+         setTimeout(function () {
+            $("#result").addClass("show");
+         }, 3200)
+      }
+
+      // spin again button click
+      $(".result_spin").click(function () {
+         $("#result").removeClass("show");
+         setTimeout(function () {
+            spin();
+         }, 200)
+      })
+
+      var results = {
+
+         // VANILLA
+
+         "VANILLA+PECAN": { "image": "VANILLA+PECAN.png", "title": "VANILLA + PECAN", "description": "Un praliné de noix de pécan enrobé de chocolat blanc avec une base au chocolat blanc à la vanille de Madagascar." },
+         "VANILLA+ALMOND": { "image": "VANILLA+ALMOND.png", "title": "VANILLA + ALMOND", "description": "Un praliné aux amandes avec des morceaux de nougat de Montélimar (France) enrobé de chocolat au lait blanc avec une base au chocolat blanc à la vanille de Madagascar." },
+         "VANILLA+HAZELNUT": { "image": "VANILLA+HAZELNUT.png", "title": "VANILLA + HAZELNUT", "description": "Un praliné aux noisettes enrobé de chocolat noir blanc avec une base au chocolat blanc à la vanille de Madagascar." },
+         "VANILLA+SALTEDCARAMEL": { "image": "VANILLA+SALTEDCARAMEL.png", "title": "VANILLA + SALTED CARAMEL", "description": "Une ganache au caramel enrobée de chocolat noir avec une base au chocolat blanc à la vanille de Madagascar." },
+         "VANILLA+VENEZUELA": { "image": "VANILLA+VENEZUELA.png", "title": "VANILLA + VENEZUELA", "description": "Une ganache de chocolat au lait du Venezuela (45% de cacao) recouverte de chocolat au lait avec une base au. chocolat blanc à la vanille de Madagascar." },
+         "VANILLA+COSTARICA": { "image": "VANILLA+COSTARICA.png", "title": "VANILLA + COSTA RICA", "description": "Une ganache de chocolat noir d'origine du Costa Rica (64% de cacao) enrobé de chocolat noir avec une base au chocolat blanc à la vanille de Madagascar." },
+
+         // GINGER
+
+         "GINGER+PECAN": { "image": "GINGER+PECAN.png", "title": "GINGER + PECAN", "description": "Un praliné de noix de pécan enrobé de chocolat blanc avec une base au chocolat au lait au gingembre." },
+         "GINGER+ALMOND": { "image": "GINGER+ALMOND.png", "title": "GINGER + ALMOND", "description": "Un praliné aux amandes avec des morceaux de nougat de Montélimar (France) enrobé de chocolat au lait blanc avec une base au chocolat au lait au gingembre." },
+         "GINGER+HAZELNUT": { "image": "GINGER+HAZELNUT.png", "title": "GINGER + HAZELNUT", "description": "Un praliné aux noisettes enrobé de chocolat noir blanc avec une base au chocolat au lait au gingembre." },
+         "GINGER+SALTEDCARAMEL": { "image": "GINGER+SALTEDCARAMEL.png", "title": "GINGER + SALTED CARAMEL", "description": "Une ganache au caramel enrobée de chocolat noir avec une base au chocolat au lait au gingembre." },
+         "GINGER+VENEZUELA": { "image": "GINGER+VENEZUELA.png", "title": "GINGER + VENEZUELA", "description": "Une ganache de chocolat au lait du Venezuela (45% de cacao) recouverte de chocolat au lait avec une base au.chocolat au lait au gingembre." },
+         "GINGER+COSTARICA": { "image": "GINGER+COSTARICA.png", "title": "GINGER + COSTA RICA", "description": "Une ganache de chocolat noir d'origine du Costa Rica (64% de cacao) enrobé de chocolat noir avec une base au chocolat au lait au gingembre." },
+
+         // RASPBERRY
+
+         "RASPBERRY+PECAN": { "image": "RASPBERRY+PECAN.png", "title": "RASPBERRY + PECAN", "description": "Un praliné de noix de pécan enrobé de chocolat blanc avec une base au chocolat blanc à la framboise." },
+         "RASPBERRY+ALMOND": { "image": "RASPBERRY+ALMOND.png", "title": "RASPBERRY + ALMOND", "description": "Un praliné aux amandes avec des morceaux de nougat de Montélimar (France) enrobé de chocolat au lait blanc avec une base au chocolat blanc à la framboise." },
+         "RASPBERRY+HAZELNUT": { "image": "RASPBERRY+HAZELNUT.png", "title": "RASPBERRY + HAZELNUT", "description": "Un praliné aux noisettes enrobé de chocolat noir blanc avec une base au chocolat blanc à la framboise." },
+         "RASPBERRY+SALTEDCARAMEL": { "image": "RASPBERRY+SALTEDCARAMEL.png", "title": "RASPBERRY + SALTED CARAMEL", "description": "Une ganache au caramel enrobée de chocolat noir avec une base au chocolat blanc à la framboise." },
+         "RASPBERRY+VENEZUELA": { "image": "RASPBERRY+VENEZUELA.png", "title": "RASPBERRY + VENEZUELA", "description": "Une ganache de chocolat au lait du Venezuela (45% de cacao) recouverte de chocolat au lait avec une base au. chocolat blanc à la framboise." },
+         "RASPBERRY+COSTARICA": { "image": "RASPBERRY+COSTARICA.png", "title": "RASPBERRY + COSTA RICA", "description": "Une ganache de chocolat noir d'origine du Costa Rica (64% de cacao) enrobé de chocolat noir avec une base au chocolat blanc à la framboise." },
+
+         // COFFEE
+
+         "COFFEE+PECAN": { "image": "COFFEE+PECAN.png", "title": "COFFEE + PECAN", "description": "Un praliné de noix de pécan enrobé de chocolat blanc avec une base au chocolat noir au café." },
+         "COFFEE+ALMOND": { "image": "COFFEE+ALMOND.png", "title": "COFFEE + ALMOND", "description": "Un praliné aux amandes avec des morceaux de nougat de Montélimar (France) enrobé de chocolat au lait blanc avec une base au chocolat noir au café." },
+         "COFFEE+HAZELNUT": { "image": "COFFEE+HAZELNUT.png", "title": "COFFEE + HAZELNUT", "description": "Un praliné aux noisettes enrobé de chocolat noir blanc avec une base au chocolat noir au café." },
+         "COFFEE+SALTEDCARAMEL": { "image": "COFFEE+SALTEDCARAMEL.png", "title": "COFFEE + SALTED CARAMEL", "description": "Une ganache au caramel enrobée de chocolat noir avec une base au chocolat noir au café." },
+         "COFFEE+VENEZUELA": { "image": "COFFEE+VENEZUELA.png", "title": "COFFEE + VENEZUELA", "description": "Une ganache de chocolat au lait du Venezuela (45% de cacao) recouverte de chocolat au lait avec une base au. chocolat noir au café." },
+         "COFFEE+COSTARICA": { "image": "COFFEE+COSTARICA.png", "title": "COFFEE + COSTA RICA", "description": "Une ganache de chocolat noir d'origine du Costa Rica (64% de cacao) enrobé de chocolat noir avec une base au chocolat noir au café." },
+
+         // LIME
+
+         "LIME+PECAN": { "image": "LIME+PECAN.png", "title": "LIME + PECAN", "description": "Un praliné de noix de pécan enrobé de chocolat blanc avec une base au chocolat blanc avec du citron vert et du citron." },
+         "LIME+ALMOND": { "image": "LIME+ALMOND.png", "title": "LIME + ALMOND", "description": "Un praliné aux amandes avec des morceaux de nougat de Montélimar (France) enrobé de chocolat au lait blanc avec une base au chocolat blanc avec du citron vert et du citron. " },
+         "LIME+HAZELNUT": { "image": "LIME+HAZELNUT.png", "title": "LIME + HAZELNUT", "description": "Un praliné aux noisettes enrobé de chocolat noir blanc avec une base au chocolat blanc avec du citron vert et du citron. " },
+         "LIME+SALTEDCARAMEL": { "image": "LIME+SALTEDCARAMEL.png", "title": "LIME + SALTED CARAMEL", "description": "Une ganache au caramel enrobée de chocolat noir avec une base au chocolat blanc avec du citron vert et du citron. " },
+         "LIME+VENEZUELA": { "image": "LIME+VENEZUELA.png", "title": "LIME + VENEZUELA", "description": "Une ganache de chocolat au lait du Venezuela (45% de cacao) recouverte de chocolat au lait avec une base au chocolat blanc avec du citron vert et du citron." },
+         "LIME+COSTARICA": { "image": "LIME+COSTARICA.png", "title": "LIME + COSTA RICA", "description": "Une ganache de chocolat noir d'origine du Costa Rica (64% de cacao) enrobé de chocolat noir avec une base au chocolat blanc avec du citron vert et du citron." },
+
+         // CARAMEL
+
+         "CARAMEL+PECAN": { "image": "CARAMEL+PECAN.png", "title": "CARAMEL + PECAN", "description": "Un praliné de noix de pécan enrobé de chocolat blanc avec une base au chocolat blanc et chocolat au lait au caramel." },
+         "CARAMEL+ALMOND": { "image": "CARAMEL+ALMOND.png", "title": "CARAMEL + ALMOND", "description": "Un praliné aux amandes avec des morceaux de nougat de Montélimar (France) enrobé de chocolat au lait blanc avec une base au chocolat blanc et chocolat au lait au caramel." },
+         "CARAMEL+HAZELNUT": { "image": "CARAMEL+HAZELNUT.png", "title": "CARAMEL + HAZELNUT", "description": "Un praliné aux noisettes enrobé de chocolat noir blanc avec une base au chocolat blanc et chocolat au lait au caramel." },
+         "CARAMEL+SALTEDCARAMEL": { "image": "CARAMEL+SALTEDCARAMEL.png", "title": "CARAMEL + SALTED CARAMEL", "description": "Une ganache au caramel enrobée de chocolat noir avec une base au chocolat blanc et chocolat au lait au caramel." },
+         "CARAMEL+VENEZUELA": { "image": "CARAMEL+VENEZUELA.png", "title": "CARAMEL + VENEZUELA", "description": "Une ganache de chocolat au lait du Venezuela (45% de cacao) recouverte de chocolat au lait avec une base au. chocolat blanc et chocolat au lait au caramel." },
+         "CARAMEL+COSTARICA": { "image": "CARAMEL+COSTARICA.png", "title": "CARAMEL + COSTA RICA", "description": "Une ganache de chocolat noir d'origine du Costa Rica (64% de cacao) enrobé de chocolat noir avec une base au chocolat blanc et chocolat au lait au caramel." },
+
+      }
+
+
+   </script>
+</body>
+
+</html>

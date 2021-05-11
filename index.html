@@ -5,279 +5,11 @@
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Document</title>
-   <style>
-      @font-face {
-         font-family: 'Flama bold';
-         font-style: normal;
-         font-weight: normal;
-         src: local('Flama'), url('css/fonts//FlamaCondensed-Medium.woff') format('woff');
-      }
-
-      @font-face {
-         font-family: 'NewsPlantinMTStd';
-         /* font-style: normal; */
-         /* font-weight: normal; */
-         src: local('NewsPlantinMTStd'), url('css/fonts/NewsPlantinMTStd.otf') format('otf');
-      }
-
-      @font-face {
-         font-family: 'Flama';
-         font-style: normal;
-         font-weight: normal;
-         src: local('Flama'), url('css/fonts/FlamaCondensed-Basic.woff') format('woff');
-      }
-      text {
-         font-family: Helvetica, Arial, sans-serif;
-         font-size: 11px;
-         pointer-events: none;
-      }
-
-      #chart {
-         /* position: absolute; */
-         width: 100%;
-         max-width: 600px;
-         /* height: 600px; */
-         /* top: 0; */
-         /* left: 0; */
-         margin: auto;
-         position: relative;
-         font-family: 'Flama';
-      }
-
-      .slice:nth-child(2n) path {
-         fill: #E9E4D6
-      }
-
-      .spin_button {
-         position: absolute;
-         top: 50%;
-         left: 50%;
-         transform: translate(-50%, -50%);
-         background: #503223;
-         color: #fff;
-         width: 150px;
-         height: 150px;
-         display: flex;
-         justify-content: center;
-         align-items: center;
-         border-radius: 50%;
-         text-align: center;
-         cursor: pointer;
-      }
-
-      .spin_button img{
-         width: 25px;
-      }
-
-      .disabled{
-         pointer-events: none;
-      }
-
-      .spin_button:before {
-         content: "";
-         border: solid #503223;
-         background: #503223;
-         border-width: 0 6px 6px 0;
-         display: inline-block;
-         padding: 8px;
-         transform: rotate(45deg);
-         -webkit-transform: rotate(45deg);
-         position: absolute;
-         bottom: -8px;
-      }
-
-      .spin_button .main_text {
-         display: block;
-         font-size: 2rem;
-      }
-
-      .spin_button .tagline {
-         font-size: 1rem;
-      }
-
-      .inner_circle {
-         /* filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.4)); */
-         filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.3));
-      }
-
-      .inner_text {
-         transform: rotate(270deg);
-         text-anchor: middle;
-         font-size: 16px;
-         text-transform: uppercase;
-         fill: #503223;
-         font-family: 'Flama';
-      }
-
-      .inner_text.bold {
-         font-family: 'Flama bold';
-      }
-
-      .outer_circle_img {
-         transform: rotate(-90deg) translate(-30px, -65px);
-         width: 55px;
-      }
-
-      svg, .spin_button{
-         user-select: none;
-      }
-
-      #result{
-         background: #503223;
-         position: absolute;
-         width: 70%;
-         height: 70%;
-         border-radius: 50%;
-         top: 50%;
-         left: 50%;
-         transform: translate(-50%, -50%) scale(0.6);
-         box-shadow: 0 0 20px 0px #00000078;
-         color: #E8E0D1;
-         text-align: center;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-         /* display: none; */
-         visibility: hidden;
-         opacity: 0;
-         transition: 0.5s;
-      }
-
-      #result.show{
-         opacity: 1;
-         visibility: visible;
-         transform: translate(-50%, -50%) scale(1);
-      }
-
-      .result_cont{
-         width: 70%;
-         margin: auto;
-      }
-
-      .result_badge{
-         width: 60px;
-         height: 45px;
-         margin-top: 15px;
-         margin-left: auto;
-         margin-right: auto;
-         position: relative;
-      }
-
-      .result_badge img{
-         width: 100%;
-         height: 100%;
-      }
-
-      .top_image_1{
-         position: absolute;
-         left: 0;
-         top: 0;
-         transform: scale(0.85);
-         transform-origin: 50% 50%;
-      }
-
-      .result_title{
-         margin: 0.5rem 0;
-         /* font-family: "flama bold"; */
-      }
-      .result_dec {
-         font-size: 13px;
-         margin: 0;
-         font-family: 'NewsPlantinMTStd';
-         font-weight: 300;
-         opacity: 0.5;
-      }
-      .result_stats{
-         border-radius: 40%;
-         width: 80%;
-         max-width: 210px;
-      }
-
-      .result_spin{
-         position: absolute;
-         bottom: 25px;
-         right: 25px;
-         background: #E8E0D1;
-         color: #503223;
-         width: 53px;
-         height: 53px;
-         text-align: center;
-         border-radius: 50%;
-         padding: 15px;
-         font-size: 18px;
-         font-weight: 600;
-         box-shadow: 0 0 15px #0000006b;
-         cursor: pointer;
-         opacity: 0;
-         transition: 0.3s;
-         transition-delay: 1s;
-         /* font-family: "flama bold"; */
-      }
-
-      #result.show .result_spin{
-         opacity: 1;
-      }
-      .result_spin img{
-         width: 16px;
-      }
-
-
-      @media screen and (max-width: 576px) {
-         #result {
-            width: 100%;
-            height: 100%;
-         }
-         .outer_circle_img {
-            transform: rotate(-90deg) translate(-25px, -40px);
-            width: 45px;
-         }
-
-         .main_circle .outer_circle_img {
-            transform: rotate(-90deg) translate(-25px, -50px);
-         }
-         .inner_text {
-            transform: rotate(270deg) translateY(10px);
-            font-size: 15px;
-         }
-         .main_circle .inner_text {
-            transform: rotate(270deg) translateY(5px);
-         }
-
-         .spin_button {
-            width: 140px;
-            height: 140px;
-         }
-         .spin_button .tagline {
-            font-size: 0.85rem;
-            z-index: 11111;
-            position: sticky;
-         }
-         .result_badge {
-            margin-top: 10px;
-         }
-      }
-
-      @media screen and (max-width: 480px){
-         .spin_button {
-            width: 140px;
-            height: 140px;
-            transform: translate(-50%, -50%) scale(0.75);
-         }
-         .result_dec {
-            font-size: 0.85rem;
-         }
-         .result_stats {
-            width: 70%;
-         }
-      }
-   </style>
+   <link rel="stylesheet" href="css/spin_wheel.css">
+   <title>English</title>
 </head>
 
 <body>
-
-
-
    <div id="chart">
       <div class="spin_button" onclick="spin()">
          <div>
@@ -303,20 +35,15 @@
       </div>
    </div>
 
-   <!--     <div id="question"><h1></h1></div> -->
-
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
    <script src="d3.v3.min.js" charset="utf-8"></script>
 
 
-
-
-
-
    <script>
+      // get the container width set the width and height of the SVG circle
       var chartWidth = $("#chart").width();
-      console.log(chartWidth)
+      // essential veriables
       var padding = { top: 0, right: 0, bottom: 0, left: 0 },
          w = chartWidth - padding.left - padding.right,
          h = chartWidth - padding.top - padding.bottom,
@@ -329,7 +56,7 @@
          picked2 = 100000,
          color = d3.scale.category20();//category20c()
 
-
+      // outer circle data
       var data = [
          { "label": "vanilla", "value": 1, "image": "vanilla.png" },
          { "label": "ginger", "value": 2, "image": "ginger.png" },
@@ -339,7 +66,7 @@
          { "label": "coffee", "value": 6, "image": "coffee.png" }
       ];
 
-
+      // inner circle data
       var data_inner = [
       { "title": "ganache", "title_bold": "costa rica", "value": 1, "image": "costarica.png", "label": "costarica"},
       { "title": "ganache", "title_bold": "venezuela", "value": 2, "image": "venezuela.png"  , "label": "venezuela"},
@@ -362,6 +89,7 @@
       var vis_inner = container
          .append("g").attr("class", "inner_circle")
 
+      // set the initial position
       vis.transition()
          .duration(0)
          .attrTween("transform", rotTween);
@@ -380,12 +108,12 @@
          .append("g")
          .attr("class", "slice");
 
+      // arc item
       arcs.append("path")
          .attr("fill", "#FFFAEF")
          .attr("d", function (d) { return arc(d); });
-      // add the text and image to outer circle
-      //   var txtt = $("text");
 
+      // add the text and image to outer circle
       arcs.append("g").attr("transform", function (d) {
          d.innerRadius = 0;
          d.outerRadius = r;
@@ -399,6 +127,7 @@
          })
 
 
+      // add image
       arcs.append("g").attr("transform", function (d) {
          console.log(d)
          d.innerRadius = 0;
@@ -428,11 +157,12 @@
          .append("g")
          .attr("class", "slice");
 
+      // add item to inner cirlce
       arcs_inner.append("path")
          .attr("fill", "#FFFAEF")
          .attr("d", function (d) { return arc(d); });
-      // add the text
 
+      // add the text
       arcs_inner.append("g").attr("transform", function (d) {
          d.innerRadius = 0;
          d.outerRadius = r / 1.45;
@@ -445,7 +175,7 @@
             return data_inner[i].title;
          })
 
-
+      // add the bold text
       arcs_inner.append("g").attr("transform", function (d) {
          d.innerRadius = 0;
          d.outerRadius = r / 1.45;
@@ -458,7 +188,7 @@
             return data_inner[i].title_bold;
          })
 
-
+      // add image
       arcs_inner.append("g").attr("transform", function (d) {
          console.log(d)
          d.innerRadius = 0;
@@ -493,11 +223,11 @@
             .duration(3000)
             .attrTween("transform", rotTween)
             .each("end", function () {
-               // console.log(data[picked].value)
                oldrotation = rotation;
             });
 
 
+            // 6 are the circle items
          var ps2 = 360 / 6,
             rng2 = Math.floor((Math.random() * 1440) + 360);
 
@@ -512,24 +242,21 @@
             .duration(3000)
             .attrTween("transform", rotTween_inner)
             .each("end", function () {
-               // console.log(data_inner[picked2].value)
                oldrotation2 = rotation2;
             });
-         // console.log("picked: " + picked, picked2)
-         // console.log(results["1_2"]["name"])
+
+         // run show_result function to create and show the results
          show_result(data[picked].label.toLocaleUpperCase()+"+"+data_inner[picked2].label.toLocaleUpperCase())
-         // show_result("VANILLA"+"+"+data_inner[picked2].label.toLocaleUpperCase())
-         
 
          setTimeout(function(){
             $(".spin_button").removeClass("disabled")
          },3000)
-
-
       }
 
 
 
+
+      // rotate animation to selected angle
       function rotTween(to) {
          var i = d3.interpolate(oldrotation % 360, rotation);
          return function (t) {
@@ -537,6 +264,7 @@
          };
       }
 
+      // rotate animation to selected angle
       function rotTween_inner(to) {
          var i = d3.interpolate(oldrotation2 % 360, rotation2);
          return function (t) {
@@ -546,6 +274,7 @@
 
 
 
+      // get random number
       function getRandomNumbers() {
          var array = new Uint16Array(1000);
          var scale = d3.scale.linear().range([360, 1440]).domain([0, 100000]);
@@ -562,24 +291,24 @@
       }
 
       function show_result(id){
-         // console.log(id)
-         // id = "VANILLA+PECAN";
-         // console.log(results[id])
-         // badge
+         // fetch top images
          var topImages = id.toLowerCase().split("+");
-         console.log(topImages)
-
+         // top images
          $(".top_image_1").attr("src", "images/"+topImages[1]+".png")
          $(".top_image_2").attr("src", "images/"+topImages[0]+".png")
-         $(".result_stats").attr("src", "images/results/"+results[id].image)
+         // main stats image
+         $(".result_stats").attr("src", "images/results_fr/"+results[id].image)
+         // title and text
          $(".result_title").text(results[id].title)
          $(".result_dec").text(results[id].description)
 
+         // show result box
          setTimeout(function(){
             $("#result").addClass("show");
          },3200)
       }
 
+      // spin again button click
       $(".result_spin").click(function(){
          $("#result").removeClass("show");
          setTimeout(function(){

@@ -1,0 +1,259 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+@font-face {
+	font-family: 'Flama bold';
+	font-style: normal;
+	font-weight: normal;
+	src: local('Flama'), url('fonts//FlamaCondensed-Medium.woff') format('woff');
+ }
+
+ @font-face {
+	font-family: 'NewsPlantinMTStd';
+	src: local('NewsPlantinMTStd'), url('fonts/NewsPlantinMTStd.otf') format('otf');
+ }
+
+ @font-face {
+	font-family: 'Flama';
+	font-style: normal;
+	font-weight: normal;
+	src: local('Flama'), url('fonts/FlamaCondensed-Basic.woff') format('woff');
+ }
+ text {
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 11px;
+	pointer-events: none;
+ }
+
+ #chart {
+	width: 100%;
+	max-width: 600px;
+	margin: auto;
+	position: relative;
+	font-family: 'Flama';
+ }
+
+ .slice:nth-child(2n) path {
+	fill: #E9E4D6
+ }
+
+ .spin_button {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #503223;
+	color: #fff;
+	width: 150px;
+	height: 150px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 50%;
+	text-align: center;
+	cursor: pointer;
+ }
+
+ .spin_button img{
+	width: 25px;
+ }
+
+ .disabled{
+	pointer-events: none;
+ }
+
+ .spin_button:before {
+	content: "";
+	border: solid #503223;
+	background: #503223;
+	border-width: 0 6px 6px 0;
+	display: inline-block;
+	padding: 8px;
+	transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	position: absolute;
+	bottom: -8px;
+ }
+
+ .spin_button .main_text {
+	display: block;
+	font-size: 2rem;
+ }
+
+ .spin_button .tagline {
+	font-size: 1rem;
+ }
+
+ .inner_circle {
+	filter: drop-shadow(0px 0px 15px rgba(0, 0, 0, 0.3));
+ }
+
+ .inner_text {
+	transform: rotate(270deg);
+	text-anchor: middle;
+	font-size: 16px;
+	text-transform: uppercase;
+	fill: #503223;
+	font-family: 'Flama';
+ }
+
+ .inner_text.bold {
+	font-family: 'Flama bold';
+ }
+
+ .outer_circle_img {
+	transform: rotate(-90deg) translate(-30px, -65px);
+	width: 55px;
+ }
+
+ svg, .spin_button{
+	user-select: none;
+ }
+
+ #result{
+	background: #503223;
+	position: absolute;
+	width: 70%;
+	height: 70%;
+	border-radius: 50%;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%) scale(0.6);
+	box-shadow: 0 0 20px 0px #00000078;
+	color: #E8E0D1;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	visibility: hidden;
+	opacity: 0;
+	transition: 0.5s;
+ }
+
+ #result.show{
+	opacity: 1;
+	visibility: visible;
+	transform: translate(-50%, -50%) scale(1);
+ }
+
+ .result_cont{
+	width: 70%;
+	margin: auto;
+ }
+
+ .result_badge{
+	width: 60px;
+	height: 45px;
+	margin-top: 15px;
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+ }
+
+ .result_badge img{
+	width: 100%;
+	height: 100%;
+ }
+
+ .top_image_1{
+	position: absolute;
+	left: 0;
+	top: 0;
+	transform: scale(0.85);
+	transform-origin: 50% 50%;
+ }
+
+ .result_title{
+	margin: 0.5rem 0;
+ }
+ .result_dec {
+	font-size: 13px;
+	margin: 0;
+	font-family: 'NewsPlantinMTStd';
+	font-weight: 300;
+	opacity: 0.5;
+ }
+ .result_stats{
+	border-radius: 40%;
+	width: 80%;
+	max-width: 210px;
+ }
+
+ .result_spin{
+	position: absolute;
+	bottom: 25px;
+	right: 25px;
+	background: #E8E0D1;
+	color: #503223;
+	width: 53px;
+	height: 53px;
+	text-align: center;
+	border-radius: 50%;
+	padding: 15px;
+	font-size: 18px;
+	font-weight: 600;
+	box-shadow: 0 0 15px #0000006b;
+	cursor: pointer;
+	opacity: 0;
+	transition: 0.3s;
+	transition-delay: 1s;
+	text-transform: uppercase;
+ }
+
+ #result.show .result_spin{
+	opacity: 1;
+ }
+ .result_spin img{
+	width: 16px;
+ }
+
+
+ @media screen and (max-width: 576px) {
+	#result {
+	   width: 100%;
+	   height: 100%;
+	}
+	.outer_circle_img {
+	   transform: rotate(-90deg) translate(-25px, -40px);
+	   width: 45px;
+	}
+
+	.main_circle .outer_circle_img {
+	   transform: rotate(-90deg) translate(-25px, -50px);
+	}
+	.inner_text {
+	   transform: rotate(270deg) translateY(10px);
+	   font-size: 15px;
+	}
+	.main_circle .inner_text {
+	   transform: rotate(270deg) translateY(5px);
+	}
+
+	.spin_button {
+	   width: 140px;
+	   height: 140px;
+	}
+	.spin_button .tagline {
+	   font-size: 0.85rem;
+	   z-index: 11111;
+	   position: sticky;
+	}
+	.result_badge {
+	   margin-top: 10px;
+	}
+ }
+
+ @media screen and (max-width: 480px){
+	.spin_button {
+	   width: 140px;
+	   height: 140px;
+	   transform: translate(-50%, -50%) scale(0.75);
+	}
+	.result_dec {
+	   font-size: 0.85rem;
+	}
+	.result_stats {
+	   width: 70%;
+	}
+ }
