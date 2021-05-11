@@ -156,8 +156,25 @@
       }
 
       .result_badge{
-         width: 50px;
-         margin-top: 30px;
+         width: 60px;
+         height: 45px;
+         margin-top: 15px;
+         margin-left: auto;
+         margin-right: auto;
+         position: relative;
+      }
+
+      .result_badge img{
+         width: 100%;
+         height: 100%;
+      }
+
+      .top_image_1{
+         position: absolute;
+         left: 0;
+         top: 0;
+         transform: scale(0.85);
+         transform-origin: 50% 50%;
       }
 
       .result_title{
@@ -237,7 +254,7 @@
             position: sticky;
          }
          .result_badge {
-            margin-top: 15px;
+            margin-top: 10px;
          }
       }
 
@@ -271,7 +288,10 @@
       </div>
       <div id="result">
          <div class="result_cont">
-            <img src="images/almond.png" alt="" class="result_badge">
+            <div class="result_badge">
+               <img src="images/almond.png" alt="icon" class="top_image_1">
+               <img src="images/almond.png" alt="icon" class="top_image_2">
+            </div>
             <h3 class="result_title">VANILLA SALTED + CARAMEL</h3>
             <h6 class="result_dec">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore vero molestias nemo veritatis nulla sed eaque similique fugit</h6>
             <img src="images/results/LIME+PECAN.png" alt="" class="result_stats">
@@ -321,7 +341,7 @@
 
 
       var data_inner = [
-      { "title": "ganache", "title_bold": "costa rica", "value": 1, "image": "costaricadark.png", "label": "costarica"},
+      { "title": "ganache", "title_bold": "costa rica", "value": 1, "image": "costarica.png", "label": "costarica"},
       { "title": "ganache", "title_bold": "venezuela", "value": 2, "image": "venezuela.png"  , "label": "venezuela"},
       { "title": "praline", "title_bold": "almond", "value": 3, "image": "almond.png"  , "label": "almond"},
       { "title": "praline", "title_bold": "pecan", "value": 4, "image": "pecan.png"  , "label": "pecan"},
@@ -542,16 +562,19 @@
       }
 
       function show_result(id){
-         console.log(id)
+         // console.log(id)
          // id = "VANILLA+PECAN";
-         console.log(results[id])
+         // console.log(results[id])
          // badge
-         // $(".result_badge").attr("src", "images/results_badge/"+results[id].image)
+         var topImages = id.toLowerCase().split("+");
+         console.log(topImages)
+
+         $(".top_image_1").attr("src", "images/"+topImages[1]+".png")
+         $(".top_image_2").attr("src", "images/"+topImages[0]+".png")
          $(".result_stats").attr("src", "images/results/"+results[id].image)
          $(".result_title").text(results[id].title)
          $(".result_dec").text(results[id].description)
-         // dummy text
-         // $(".result_dec").text("Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore vero molestias nemo veritatis nulla sed eaque similique fugit")
+
          setTimeout(function(){
             $("#result").addClass("show");
          },3200)
