@@ -25,7 +25,8 @@
                <img src="images/almond.png" alt="icon" class="top_image_2">
             </div>
             <h3 class="result_title">VANILLA SALTED + CARAMEL</h3>
-            <h6 class="result_dec">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore vero molestias nemo veritatis nulla sed eaque similique fugit</h6>
+            <h6 class="result_dec">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolore vero molestias nemo
+               veritatis nulla sed eaque similique fugit</h6>
             <img src="images/results/LIME+PECAN.png" alt="" class="result_stats">
          </div>
          <div class="result_spin">
@@ -68,12 +69,12 @@
 
       // inner circle data
       var data_inner = [
-      { "title": "ganache", "title_bold": "costa rica", "value": 1, "image": "costarica.png", "label": "costarica"},
-      { "title": "ganache", "title_bold": "venezuela", "value": 2, "image": "venezuela.png"  , "label": "venezuela"},
-      { "title": "praline", "title_bold": "almond", "value": 3, "image": "almond.png"  , "label": "almond"},
-      { "title": "praline", "title_bold": "pecan", "value": 4, "image": "pecan.png"  , "label": "pecan"},
-      { "title": "praline", "title_bold": "hazelnut", "value": 5, "image": "hazelnut.png"  , "label": "hazelnut"},
-      { "title": "ganache", "title_bold": "salted caramel", "value": 6, "image": "saltedcaramel.png" , "label": "saltedcaramel" }
+         { "title": "ganache", "title_bold": "costa rica", "value": 1, "image": "costarica.png", "label": "costarica" },
+         { "title": "ganache", "title_bold": "venezuela", "value": 2, "image": "venezuela.png", "label": "venezuela" },
+         { "title": "praline", "title_bold": "almond", "value": 3, "image": "almond.png", "label": "almond" },
+         { "title": "praline", "title_bold": "pecan", "value": 4, "image": "pecan.png", "label": "pecan" },
+         { "title": "praline", "title_bold": "hazelnut", "value": 5, "image": "hazelnut.png", "label": "hazelnut" },
+         { "title": "ganache", "title_bold": "salted caramel", "value": 6, "image": "saltedcaramel.png", "label": "saltedcaramel" }
       ];
       var svg = d3.select('#chart')
          .append("svg")
@@ -227,7 +228,7 @@
             });
 
 
-            // 6 are the circle items
+         // 6 are the circle items
          var ps2 = 360 / 6,
             rng2 = Math.floor((Math.random() * 1440) + 360);
 
@@ -246,11 +247,11 @@
             });
 
          // run show_result function to create and show the results
-         show_result(data[picked].label.toLocaleUpperCase()+"+"+data_inner[picked2].label.toLocaleUpperCase())
+         show_result(data[picked].label.toLocaleUpperCase() + "+" + data_inner[picked2].label.toLocaleUpperCase())
 
-         setTimeout(function(){
+         setTimeout(function () {
             $(".spin_button").removeClass("disabled")
-         },3000)
+         }, 3000)
       }
 
 
@@ -290,30 +291,30 @@
          return array;
       }
 
-      function show_result(id){
+      function show_result(id) {
          // fetch top images
          var topImages = id.toLowerCase().split("+");
          // top images
-         $(".top_image_1").attr("src", "images/"+topImages[1]+".png")
-         $(".top_image_2").attr("src", "images/"+topImages[0]+".png")
+         $(".top_image_1").attr("src", "images/" + topImages[1] + ".png")
+         $(".top_image_2").attr("src", "images/" + topImages[0] + ".png")
          // main stats image
-         $(".result_stats").attr("src", "images/results_fr/"+results[id].image)
+         $(".result_stats").attr("src", "images/results/" + results[id].image)
          // title and text
          $(".result_title").text(results[id].title)
          $(".result_dec").text(results[id].description)
 
          // show result box
-         setTimeout(function(){
+         setTimeout(function () {
             $("#result").addClass("show");
-         },3200)
+         }, 3200)
       }
 
       // spin again button click
-      $(".result_spin").click(function(){
+      $(".result_spin").click(function () {
          $("#result").removeClass("show");
-         setTimeout(function(){
+         setTimeout(function () {
             spin();
-         },200)
+         }, 200)
       })
 
       var results = {
