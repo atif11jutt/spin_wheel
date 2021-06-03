@@ -158,14 +158,24 @@
 
  .top_image_1{
 	position: absolute;
-	left: 0;
+	/* left: 0; */
 	top: 0;
 	transform: scale(0.85);
 	transform-origin: 50% 50%;
+	z-index: 11;
+	box-shadow: 0 0 50px;
+    border-radius: 50%;
+ }
+
+ .top_image_2{
+	position: relative;
+	box-shadow: 0 0 50px;
+    border-radius: 50%;
  }
 
  .result_title{
 	margin: 0.5rem 0;
+	position: relative;
  }
  .result_dec {
 	font-size: 13px;
@@ -197,7 +207,7 @@
 	cursor: pointer;
 	opacity: 0;
 	transition: 0.3s;
-	transition-delay: 1s;
+	transition-delay: 5s;
 	text-transform: uppercase;
  }
 

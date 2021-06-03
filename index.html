@@ -36,6 +36,7 @@
       </div>
    </div>
 
+
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
    <script src="js/d3.v3.min.js" charset="utf-8"></script>
@@ -56,6 +57,7 @@
          picked = 100000,
          picked2 = 100000,
          color = d3.scale.category20();//category20c()
+         var totalDuration = 5000;
 
       // outer circle data
       var data = [
@@ -144,6 +146,7 @@
          })
 
 
+         
 
 
 
@@ -212,7 +215,7 @@
          $(".spin_button").addClass("disabled")
 
          var ps = 360 / 6,
-            rng = Math.floor((Math.random() * 1440) + 360);
+            rng = Math.floor((Math.random() * 1440) + 1800);
 
          rotation = (Math.round(rng / ps) * ps);
 
@@ -221,7 +224,7 @@
 
          rotation += 0 + Math.round(ps / 2);
          vis.transition()
-            .duration(3000)
+            .duration(totalDuration)
             .attrTween("transform", rotTween)
             .each("end", function () {
                oldrotation = rotation;
@@ -230,7 +233,7 @@
 
          // 6 are the circle items
          var ps2 = 360 / 6,
-            rng2 = Math.floor((Math.random() * 1440) + 360);
+            rng2 = Math.floor((Math.random() * 1440) + 1800);
 
          rotation2 = (Math.round(rng2 / ps2) * ps2);
 
@@ -240,7 +243,7 @@
 
          rotation2 -= 150;
          vis_inner.transition()
-            .duration(3000)
+            .duration(totalDuration)
             .attrTween("transform", rotTween_inner)
             .each("end", function () {
                oldrotation2 = rotation2;
@@ -251,7 +254,7 @@
 
          setTimeout(function () {
             $(".spin_button").removeClass("disabled")
-         }, 3000)
+         }, totalDuration)
       }
 
 
@@ -295,19 +298,53 @@
          // fetch top images
          var topImages = id.toLowerCase().split("+");
          // top images
-         $(".top_image_1").attr("src", "images/" + topImages[1] + ".png")
-         $(".top_image_2").attr("src", "images/" + topImages[0] + ".png")
+         $(".top_image_1").attr("src", "images/" + topImages[1] + ".png").css({right: "-100px", opacity: 0, top: "100px"});
+         $(".top_image_2").attr("src", "images/" + topImages[0] + ".png").css({left: "-100px", opacity: 0, top: "100px"});
          // main stats image
-         $(".result_stats").attr("src", "images/results/" + results[id].image)
+         $(".result_stats").attr("src", "images/results/" + results[id].image).css({opacity: 0});
          // title and text
-         $(".result_title").text(results[id].title)
-         $(".result_dec").text(results[id].description)
+         $(".result_title").text(results[id].title).css({opacity: 0, top: "100px"});
+         $(".result_dec").text(results[id].description).css({opacity: 0});
 
+         // $("#spinAudio").play()
+         const audio = new Audio("audio/wheelspin.mp3");
+         audio.play();
       
          // show result box
          setTimeout(function () {
             $("#result").addClass("show");
-         }, 3200)
+            $(".top_image_1").animate({
+               opacity: 1
+            }, 1000).animate({
+               right: '0px'
+            }, 2000).animate({
+               top: 0
+            },1500);
+
+            $(".top_image_2").animate({
+               opacity: 1
+            }, 1000).animate({
+               left: '0px'
+            }, 2000).animate({
+               top: 0
+            },1500);
+
+            $(".result_title").animate({
+               opacity: 0
+            }, 2500).animate({
+               opacity: 1
+            }, 500).animate({
+               top: 0
+            },1500);
+
+            $(".result_dec, .result_stats").animate({
+               opacity: 0
+            }, 4500).animate({
+               opacity: 1
+            }, 500)
+
+
+         }, (totalDuration + 200))
       }
 
       // spin again button click
