@@ -245,7 +245,7 @@
 	   height: 140px;
 	}
 	.spin_button .tagline {
-	   font-size: 0.85rem;
+	   font-size: 0.9rem;
 	   z-index: 11111;
 	   position: sticky;
 	}
@@ -265,5 +265,30 @@
 	}
 	.result_stats {
 	   width: 70%;
+	}
+ }
+
+
+ @media screen and (max-width: 420px){
+	.main_circle .outer_circle_img {
+		transform: rotate(-90deg) translate(-20px, -40px);
+		width: 40px;
+	}
+	.outer_circle_img {
+		transform: rotate(-90deg) translate(-20px, -35px);
+		width: 40px;
+	}
+	.inner_text {
+		transform: rotate(270deg) translateY(13px);
+		font-size: 14px;
+	}
+	.inner_text.bold {
+		transform: rotate(270deg) translateY(10px);
+	}
+ }
+
+ @media screen and (max-width: 380px){
+	.spin_button {
+		transform: translate(-50%, -50%) scale(0.6);
 	}
  }

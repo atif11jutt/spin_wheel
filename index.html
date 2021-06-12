@@ -306,12 +306,28 @@
          $(".result_title").text(results[id].title).css({opacity: 0, top: "100px"});
          $(".result_dec").text(results[id].description).css({opacity: 0});
 
-         // $("#spinAudio").play()
-         const audio = new Audio("audio/wheelspin.mp3");
+         const audio = new Audio("audio/SpinningWheel.mp3");
          audio.play();
+
+         const audio2 = new Audio("audio/WheelClick.mp3");
+         audio2.play();
       
          // show result box
          setTimeout(function () {
+
+            const audio = new Audio("audio/WinFanfare.mp3");
+            audio.play();
+
+            setTimeout(() => {
+               const audio2 = new Audio("audio/WheelResult.mp3");
+               audio2.play();
+            }, 1000);
+
+            setTimeout(() => {
+               const audio2 = new Audio("audio/WheelResult.mp3");
+               audio2.play();
+            }, 3000);
+
             $("#result").addClass("show");
             $(".top_image_1").animate({
                opacity: 1
@@ -352,7 +368,9 @@
          $("#result").removeClass("show");
          setTimeout(function () {
             spin();
-         }, 200)
+         }, 200);
+         const audio = new Audio("audio/SpinAgain.mp3");
+         audio.play();
       })
 
       var results = {
