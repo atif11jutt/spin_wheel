@@ -57,7 +57,7 @@
          picked = 100000,
          picked2 = 100000,
          color = d3.scale.category20();//category20c()
-         var totalDuration = 5000;
+      var totalDuration = 5000;
 
       // outer circle data
       var data = [
@@ -146,7 +146,7 @@
          })
 
 
-         
+
 
 
 
@@ -298,20 +298,20 @@
          // fetch top images
          var topImages = id.toLowerCase().split("+");
          // top images
-         $(".top_image_1").attr("src", "images/" + topImages[1] + ".png").css({right: "-100px", opacity: 0, top: "100px"});
-         $(".top_image_2").attr("src", "images/" + topImages[0] + ".png").css({left: "-100px", opacity: 0, top: "100px"});
+         $(".top_image_1").attr("src", "images/" + topImages[1] + ".png").css({ right: "-100px", opacity: 0, top: "100px" });
+         $(".top_image_2").attr("src", "images/" + topImages[0] + ".png").css({ left: "-100px", opacity: 0, top: "100px" });
          // main stats image
-         $(".result_stats").attr("src", "images/results/" + results[id].image).css({opacity: 0});
+         $(".result_stats").attr("src", "images/results/" + results[id].image).css({ opacity: 0 });
          // title and text
-         $(".result_title").text(results[id].title).css({opacity: 0, top: "100px"});
-         $(".result_dec").text(results[id].description).css({opacity: 0});
+         $(".result_title").text(results[id].title).css({ opacity: 0, top: "100px" });
+         $(".result_dec").text(results[id].description).css({ opacity: 0 });
 
          const audio = new Audio("audio/SpinningWheel.mp3");
          audio.play();
 
          const audio2 = new Audio("audio/WheelClick.mp3");
          audio2.play();
-      
+
          // show result box
          setTimeout(function () {
 
@@ -335,7 +335,7 @@
                right: '0px'
             }, 2000).animate({
                top: 0
-            },1500);
+            }, 1500);
 
             $(".top_image_2").animate({
                opacity: 1
@@ -343,7 +343,7 @@
                left: '0px'
             }, 2000).animate({
                top: 0
-            },1500);
+            }, 1500);
 
             $(".result_title").animate({
                opacity: 0
@@ -351,7 +351,7 @@
                opacity: 1
             }, 500).animate({
                top: 0
-            },1500);
+            }, 1500);
 
             $(".result_dec, .result_stats").animate({
                opacity: 0
@@ -366,9 +366,9 @@
       // spin again button click
       $(".result_spin").click(function () {
          $("#result").removeClass("show");
-         setTimeout(function () {
-            spin();
-         }, 200);
+         // setTimeout(function () {
+         //    spin();
+         // }, 200);
          const audio = new Audio("audio/SpinAgain.mp3");
          audio.play();
       })
@@ -432,6 +432,9 @@
       }
 
 
+
+
    </script>
 </body>
+
 </html>
