@@ -47,6 +47,7 @@
 	color: #fff;
 	width: 150px;
 	height: 150px;
+	display:-webkit-flex;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -123,6 +124,7 @@
 	box-shadow: 0 0 20px 0px #00000078;
 	color: #E8E0D1;
 	text-align: center;
+	display:-webkit-flex;
 	display: flex;
 	align-items: center;
 	justify-content: center;
