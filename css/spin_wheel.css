@@ -42,6 +42,7 @@
 	position: absolute;
 	top: 50%;
 	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
 	transform: translate(-50%, -50%);
 	background: #503223;
 	color: #fff;
@@ -91,6 +92,7 @@
  }
 
  .inner_text {
+	-webkit-transform: rotate(270deg);
 	transform: rotate(270deg);
 	text-anchor: middle;
 	font-size: 16px;
@@ -104,6 +106,7 @@
  }
 
  .outer_circle_img {
+	-webkit-transform: rotate(-90deg) translate(-30px, -65px);
 	transform: rotate(-90deg) translate(-30px, -65px);
 	width: 55px;
  }
@@ -120,6 +123,7 @@
 	border-radius: 50%;
 	top: 50%;
 	left: 50%;
+	-webkit-transform: translate(-50%, -50%) scale(0.6);
 	transform: translate(-50%, -50%) scale(0.6);
 	box-shadow: 0 0 20px 0px #00000078;
 	color: #E8E0D1;
@@ -130,12 +134,14 @@
 	justify-content: center;
 	visibility: hidden;
 	opacity: 0;
+	-webkit-transition: 0.5s;
 	transition: 0.5s;
  }
 
  #result.show{
 	opacity: 1;
 	visibility: visible;
+	-webkit-transform: translate(-50%, -50%) scale(1);
 	transform: translate(-50%, -50%) scale(1);
  }
 
@@ -227,19 +233,23 @@
 	   height: 100%;
 	}
 	.outer_circle_img {
-	   transform: rotate(-90deg) translate(-25px, -40px);
+		-webkit-transform: rotate(-90deg) translate(-25px, -40px);
+		transform: rotate(-90deg) translate(-25px, -40px);
 	   width: 45px;
 	}
 
 	.main_circle .outer_circle_img {
-	   transform: rotate(-90deg) translate(-25px, -50px);
+		-webkit-transform: rotate(-90deg) translate(-25px, -50px);
+		transform: rotate(-90deg) translate(-25px, -50px);
 	}
 	.inner_text {
-	   transform: rotate(270deg) translateY(10px);
+		-webkit-transform: rotate(270deg) translateY(10px);
+		transform: rotate(270deg) translateY(10px);
 	   font-size: 15px;
 	}
 	.main_circle .inner_text {
-	   transform: rotate(270deg) translateY(5px);
+		-webkit-transform: rotate(270deg) translateY(5px);
+		transform: rotate(270deg) translateY(5px);
 	}
 
 	.spin_button {
@@ -260,6 +270,7 @@
 	.spin_button {
 	   width: 140px;
 	   height: 140px;
+	   -webkit-transform: translate(-50%, -50%) scale(0.75);
 	   transform: translate(-50%, -50%) scale(0.75);
 	}
 	.result_dec {
@@ -273,24 +284,29 @@
 
  @media screen and (max-width: 420px){
 	.main_circle .outer_circle_img {
+		-webkit-transform: rotate(-90deg) translate(-20px, -40px);
 		transform: rotate(-90deg) translate(-20px, -40px);
 		width: 40px;
 	}
 	.outer_circle_img {
+		-webkit-transform: rotate(-90deg) translate(-20px, -35px);
 		transform: rotate(-90deg) translate(-20px, -35px);
 		width: 40px;
 	}
 	.inner_text {
+		-webkit-transform: rotate(270deg) translateY(13px);
 		transform: rotate(270deg) translateY(13px);
 		font-size: 14px;
 	}
 	.inner_text.bold {
+		-webkit-transform: rotate(270deg) translateY(10px);
 		transform: rotate(270deg) translateY(10px);
 	}
  }
 
  @media screen and (max-width: 380px){
 	.spin_button {
+		-webkit-transform: translate(-50%, -50%) scale(0.6);
 		transform: translate(-50%, -50%) scale(0.6);
 	}
  }

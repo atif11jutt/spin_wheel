@@ -306,8 +306,8 @@
          $(".result_title").text(results[id].title).css({ opacity: 0, top: "100px" });
          $(".result_dec").text(results[id].description).css({ opacity: 0 });
 
-         const audio = new Audio("audio/SpinningWheel.mp3");
-         audio.play();
+         const audio3 = new Audio("audio/SpinningWheel.mp3");
+         audio3.play();
 
          const audio2 = new Audio("audio/WheelClick.mp3");
          audio2.play();
@@ -318,12 +318,12 @@
             const audio = new Audio("audio/WinFanfare.mp3");
             audio.play();
 
-            setTimeout(() => {
+            setTimeout(function () {
                const audio2 = new Audio("audio/WheelResult.mp3");
                audio2.play();
             }, 1000);
 
-            setTimeout(() => {
+            setTimeout(function () {
                const audio2 = new Audio("audio/SpinAgain.mp3");
                audio2.play();
             }, 5000);
