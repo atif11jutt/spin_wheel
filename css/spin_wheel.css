@@ -247,7 +247,7 @@
 	   height: 140px;
 	}
 	.spin_button .tagline {
-	   font-size: 0.9rem;
+	   /* font-size: 0.9rem; */
 	   z-index: 11111;
 	   position: sticky;
 	}
