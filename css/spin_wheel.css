@@ -227,6 +227,11 @@
  }
 
 
+ .boxShadowNone{
+	 box-shadow: 0 0 0;
+	 transition: box-shadow 1s;
+ }
+
  @media screen and (max-width: 576px) {
 	#result {
 	   width: 100%;
@@ -310,3 +315,4 @@
 		transform: translate(-50%, -50%) scale(0.6);
 	}
  }
+

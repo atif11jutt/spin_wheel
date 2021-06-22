@@ -332,10 +332,14 @@
             $(".top_image_1").animate({
                opacity: 1
             }, 1000).animate({
-               right: '0px'
+               right: '0px',
             }, 2000).animate({
                top: 0
             }, 1500);
+
+            setTimeout(function(){
+               $(".top_image_1").addClass("boxShadowNone")
+            },3500)
 
             $(".top_image_2").animate({
                opacity: 1
@@ -366,6 +370,7 @@
       // spin again button click
       $(".result_spin").click(function () {
          $("#result").removeClass("show");
+         $(".top_image_1").removeClass("boxShadowNone");
          // setTimeout(function () {
          //    spin();
          // }, 200);
